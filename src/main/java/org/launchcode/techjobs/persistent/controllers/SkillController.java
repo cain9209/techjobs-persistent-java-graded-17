@@ -1,7 +1,7 @@
 package org.launchcode.techjobs.persistent.controllers;
 
 import jakarta.validation.Valid;
-import org.launchcode.techjobs.persistent.models.Employer;
+import org.launchcode.techjobs.persistent.models.Skill;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,31 +28,30 @@ public class SkillController {
 
     // This test is still failing //
     @GetMapping("add")
-    public String displayAddEmployerForm(Model model) {
-        model.addAttribute(new Employer());
-        return "employers/add";
+    public String displayAddSkill(Model model) {
+        model.addAttribute(new Skill());
+        return "skills/add";
     }
 
     @PostMapping("add")
-    public String processAddEmployerForm(@ModelAttribute @Valid Employer newEmployer,
+    public String processAddEmployerForm(@ModelAttribute @Valid Skill newSkill,
                                          Errors errors, Model model) {
 
         if (errors.hasErrors()) {
-            return "employers/add";
+            return "skills/add";
         }
 
-        skillRepository.save(newEmployer);
+        skillRepository.save(newSkill);
         return "redirect:";
     }
 
-    @GetMapping("view/{employerId}")
-    public String displayViewEmployer(Model model, @PathVariable int employerId) {
-
-        Optional<Employer> optEmployer = skillRepository.findById(employerId);
-        if (optEmployer.isPresent()) {
-            Employer employer = (Employer) optEmployer.get();
-            model.addAttribute("employer", employer);
-            return "employers/view";
+    @GetMapping("view/{skillId}")
+    public String displayViewSkill(Model model, @PathVariable int skillId) {
+        Optional<Skill> optSkill = skillRepository.findById(skillId);
+        if (optSkill.isPresent()) {
+            Skill skill = optSkill.get();
+            model.addAttribute("skill", skill);
+            return "skills/view";
         } else {
             return "redirect:../";
         }
