@@ -501,7 +501,7 @@ public class TestTaskTwo extends AbstractTest {
     /*
      * Verify that processAddSkillForm saves a new skill to the database
      * */
-    @Test
+   @Test
     public void testNewSkillIsSaved (@Mocked SkillRepository skillRepository, @Mocked Errors errors) throws ClassNotFoundException, NoSuchMethodException, NoSuchFieldException, IllegalAccessException, InvocationTargetException {
         Class skillControllerClass = getClassByName("controllers.SkillController");
         Method processAddSkillFormMethod = skillControllerClass.getMethod("processAddSkillForm", Skill.class, Errors.class, Model.class);
