@@ -12,4 +12,8 @@ WHERE location = "St. Louis City";
 --Part 3
 DROP TABLE job;
 --Part 4
-
+--SELECT DISTINCT Skill.name
+--FROM Skill
+--JOIN
+--JOIN
+--ORDER BY Skill.name
