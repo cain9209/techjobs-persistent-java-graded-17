@@ -1,4 +1,5 @@
 package org.launchcode.techjobs.persistent.models;
+import jakarta.persistence.ManyToMany;
 
 
 import jakarta.persistence.*;
@@ -10,16 +11,11 @@ import java.util.List;
 public class Job extends AbstractEntity {
 
     @ManyToOne
-    @JoinColumn(name = "employer_id")
+    @JoinColumn
     private Employer employer;
 
 
     @ManyToMany
-    @JoinTable(
-            name = "job_skill",
-            joinColumns = @JoinColumn(name = "job_id"),
-            inverseJoinColumns = @JoinColumn(name = "skill_id")
-    )
     private List<Skill> skills = new ArrayList<>();
 
 
