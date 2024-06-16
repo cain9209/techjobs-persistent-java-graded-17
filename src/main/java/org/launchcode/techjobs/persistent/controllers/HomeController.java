@@ -33,7 +33,6 @@ public class HomeController {
     private JobRepository jobRepository;
 
 
-
     @RequestMapping("/")
     public String index(Model model) {
 
@@ -44,16 +43,16 @@ public class HomeController {
 
     @GetMapping("add")
     public String displayAddJobForm(Model model) {
-	model.addAttribute("title", "Add Job");
-    model.addAttribute("employers",employerRepository.findAll());
-    model.addAttribute("skills", skillRepository.findAll());
+        model.addAttribute("title", "Add Job");
+        model.addAttribute("employers", employerRepository.findAll());
+        model.addAttribute("skills", skillRepository.findAll());
         model.addAttribute(new Job());
         return "add";
     }
 
     @PostMapping("add")
     public String processAddJobForm(@ModelAttribute @Valid Job newJob,
-                                       Errors errors, Model model,
+                                    Errors errors, Model model,
                                     @RequestParam int employerId,
                                     @RequestParam List<Integer> skills) {
 
@@ -74,21 +73,27 @@ public class HomeController {
         }
 
 
-
         List<Skill> skillObjs = (List<Skill>) skillRepository.findAllById(skills);
         newJob.setSkills(skillObjs);
 
 
-//
         jobRepository.save(newJob);
 
         return "redirect:";
     }
-// build out display view job need to finalize //
+
+
     @GetMapping("view/{jobId}")
     public String displayViewJob(Model model, @PathVariable int jobId) {
-
+        Optional<Job> result = jobRepository.findById(jobId);
+        if (result.isPresent()) {
+            Job job = result.get();
+            model.addAttribute("job", job);
             return "view";
+        } else {
+            model.addAttribute("error", "Job not found");
+            return "redirect:/";
+        }
+
     }
-//
 }
