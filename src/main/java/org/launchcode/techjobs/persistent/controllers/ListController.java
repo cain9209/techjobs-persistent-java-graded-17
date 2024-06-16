@@ -48,19 +48,26 @@ public class ListController {
         model.addAttribute("skills", skillRepository.findAll());
         return "list";
     }
-
+// needs some work //
     @RequestMapping(value = "jobs")
-    public String listJobsByColumnAndValue(Model model, @RequestParam String column, @RequestParam String value) {
+    public String listJobsByColumnAndValue(Model model,
+                                           @RequestParam(required = false, defaultValue = "all") String column,
+                                           @RequestParam(required = false, defaultValue = "") String value) {
         Iterable<Job> jobs;
-        if (column.toLowerCase().equals("all")){
+        if (column == null || column.toLowerCase().equals("all")) {
             jobs = jobRepository.findAll();
             model.addAttribute("title", "All Jobs");
         } else {
-            jobs = JobData.findByColumnAndValue(column, value, jobRepository.findAll());
-            model.addAttribute("title", "Jobs with " + columnChoices.get(column) + ": " + value);
+            if (value == null || value.isEmpty()) {
+                jobs = jobRepository.findAll(); // You can modify this line to handle differently if needed
+                model.addAttribute("title", "Jobs with " + columnChoices.get(column));
+            } else {
+                jobs = JobData.findByColumnAndValue(column, value, jobRepository.findAll());
+                model.addAttribute("title", "Jobs with " + columnChoices.get(column) + ": " + value);
+            }
         }
         model.addAttribute("jobs", jobs);
-
+        model.addAttribute("columnChoices", columnChoices);  // Ensure column choices are passed to the view
         return "list-jobs";
     }
 }

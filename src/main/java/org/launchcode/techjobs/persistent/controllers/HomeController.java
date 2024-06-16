@@ -37,7 +37,7 @@ public class HomeController {
     @RequestMapping("/")
     public String index(Model model) {
 
-        model.addAttribute("title", "MyJobs");
+        model.addAttribute("jobs", jobRepository.findAll());
 
         return "index";
     }
@@ -54,7 +54,7 @@ public class HomeController {
     @PostMapping("add")
     public String processAddJobForm(@ModelAttribute @Valid Job newJob,
                                        Errors errors, Model model,
-                                    @RequestParam("employer_id") int employerId,
+                                    @RequestParam int employerId,
                                     @RequestParam List<Integer> skills) {
 
 
@@ -84,11 +84,11 @@ public class HomeController {
 
         return "redirect:";
     }
-
+// build out display view job need to finalize //
     @GetMapping("view/{jobId}")
     public String displayViewJob(Model model, @PathVariable int jobId) {
 
             return "view";
     }
-
+//
 }
